@@ -21,3 +21,22 @@ def heston_call_price(S0, K, T, r, v0, kappa, theta, sigma, rho, N=1000):
 
     # call price
     return (S0 * np.exp(-r * T) * quad(integrand, 0, N)[0] / np.pi + K * np.exp(-r * T) * quad(integrand, -N, 0)[0] / np.pi)
+
+def heston_implied_volatility(S0, K, T, r, v0, kappa, theta, sigma, rho, call_price, N=1000):
+    """
+    Heston model implied volatility
+    """
+    def f(vol):
+        return heston_call_price(S0, K, T, r, v0, kappa, theta, vol, rho, N) - call_price
+
+    return brentq(f, 1e-6, 1)
+
+def calibrate_heston(S0, K, T, r, call_price, v0, kappa, theta, sigma, rho, N=1000):
+    """
+    Heston model calibration
+    """
+    def f(vol):
+        return heston_call_price(S0, K, T, r, v0, kappa, theta, vol, rho, N) - call_price
+
+    return brentq(f, 1e-6, 1)
+
