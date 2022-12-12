@@ -10,6 +10,7 @@ def load_data():
     spx_options['exdate'] = pd.to_datetime(spx_options['exdate'])
     spx_options['maturity'] = (spx_options['exdate'] - spx_options['date']).dt.days
     spx_options['strike_price'] = spx_options['strike_price'].astype(float) / 1000
+    spx_options['mid'] = (spx_options['best_bid'] + spx_options['best_offer']) / 2
     # remove options with no bid
     spx_options = spx_options[spx_options['best_bid'] > 0]
     # remove in the money options for both calls and puts
@@ -26,6 +27,7 @@ def load_data():
     # remove in the money options for both calls and puts
     vix_options = vix_options[((vix_options['strike_price'] > close_vix) & (vix_options['cp_flag'] == 'C'))
                               | ((vix_options['strike_price'] < close_vix) & (vix_options['cp_flag'] == 'P'))]
+    vix_options['mid'] = (vix_options['best_bid'] + vix_options['best_offer']) / 2
 
     return spx_options, vix_options
 
