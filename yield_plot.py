@@ -58,6 +58,11 @@ r_calibrated = pd.DataFrame({
     'date': T,
     'yield': calibration.x[1:]
 })
+# add maturity to yield
+r_calibrated['maturity'] = (
+    (r_calibrated['date'] - r_calibrated['date'].min()) /
+    np.timedelta64(1, 'D')
+) / 365
 
 print('Calibrated yield curve:', r_calibrated)
 print('Calibrated dividend rate: ', q_calibrated)
