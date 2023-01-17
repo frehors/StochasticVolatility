@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 
 def load_data():
     # sheet SPX options header in row 6
